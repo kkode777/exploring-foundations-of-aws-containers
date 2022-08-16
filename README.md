@@ -1,4 +1,4 @@
-# Deploying a container to AWS Fargate using AWS Copilot
+# Explore the foundations of AWS containers
 
 ## Step One: Access your account
 
