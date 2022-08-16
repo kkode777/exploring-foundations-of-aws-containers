@@ -62,6 +62,9 @@ sudo mv copilot /usr/local/bin/copilot
 copilot --help
 ```
 
+At this point you should also open up the [AWS Copilot docs](https://aws.github.io/copilot-cli/) in another browser tab, as you may find the command
+references helpful to refer to as you go through the rest of the instructions.
+
 Next let's run a quick script to customize the AWS config inside of the development environment:
 
 ```sh
@@ -460,7 +463,7 @@ If you are down for an extra challenge, then try deploying the application in th
 This containerized application implements a simple hit counter that counts the number of requests the
 application receives. It stores its state inside of a DynamoDB table.
 
-Hint: You can use the `copilot storage init` command to automatically create a DynamoDB table for the application
+Hint: You can use the [`copilot storage init` command](https://aws.github.io/copilot-cli/docs/commands/storage-init/) to automatically create a DynamoDB table for the application
 prior to deploying it using AWS Copilot. The application is expecting:
 
 ```
