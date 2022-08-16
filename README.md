@@ -86,10 +86,10 @@ EOF
 Last you should clone this repo inside of the environment in order to pull in the code that will be used:
 
 ```sh
-git clone https://github.com/nathanpeck/deploying-container-to-fargate-using-aws-copilot.git
+git clone https://github.com/aws-containers/exploring-foundations-of-aws-containers.git
 ```
 
-## Step Two: Meet the sample application
+## Step Two: Meet the basic sample application
 
 In the Cloud9 IDE look at the sidebar and open the file at `/deploying-container-to-fargate-using-aws-copilot/app/index.js`:
 
@@ -102,7 +102,7 @@ You can run this microservice locally on the Cloud9 environment even though it i
 Go back to the terminal that you opened in Cloud9 and run:
 
 ```sh
-cd deploying-container-to-fargate-using-aws-copilot/app
+cd exploring-foundations-of-aws-containers/app
 npm install
 node index.js
 ```
