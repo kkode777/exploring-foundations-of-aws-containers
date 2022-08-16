@@ -454,7 +454,25 @@ And you can get logs for the service using `copilot svc logs`
 
 Bonus Points: Try deploying another copy of the load test job, but this time make the load test target the AWS App Runner deployment.
 
-## Step Eight: Tear everything down
+## Extra Learning
+
+If you are down for an extra challenge, then try deploying the application in the `hit-counter` folder.
+This containerized application implements a simple hit counter that counts the number of requests the
+application receives. It stores its state inside of a DynamoDB table.
+
+Hint: You can use the `copilot storage init` command to automatically create a DynamoDB table for the application
+prior to deploying it using AWS Copilot. The application is expecting:
+
+```
+  Table Name: hits
+  Table primary key: counter
+  Table primary key type: string
+```
+
+Copilot will automatically take care of creating the permissions between the application and the table. See if you
+can deploy this more complicated application!
+
+## Final Step: Tear everything down
 
 If you want to clean everything up you can go back to Cloud9 and run:
 
