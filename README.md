@@ -483,4 +483,4 @@ If you want to clean everything up you can go back to Cloud9 and run:
 copilot app delete
 ```
 
-This will delete all resources grouped under the application, including the `reverse` service and the `load` job.
+This will delete all resources grouped under the application, including all the services and jobs you deployed.
