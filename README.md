@@ -117,7 +117,7 @@ If you go back to the other terminal tab where you launched the application you 
 
 ![images/app-logs.png](images/app-logs.png)
 
-Press Control + C in that tab to send a quit signal to the application and close it.
+Press Control + C in the tab where you launched the application to send a quit signal to the application and close it.
 
 ## Step Three: Create a Dockerfile for the application
 
@@ -132,13 +132,16 @@ Now that you have seen the application running, it is time to package this appli
 Copy and paste the following content into the Dockerfile:
 
 ```Dockerfile
-FROM public.ecr.aws/bitnami/node:16 AS build
+FROM public.ecr.aws/docker/library/node:18 AS build
 WORKDIR /srv
 ADD package.json package-lock.json ./
 RUN npm install
 
-FROM public.ecr.aws/bitnami/node:16-prod
-WORKDIR /srv
+FROM public.ecr.aws/docker/library/node:18-slim
+RUN apt-get update && apt-get install -y \
+  curl \
+  --no-install-recommends \
+  && rm -rf /var/lib/apt/lists/* && apt-get clean
 COPY --from=build /srv .
 ADD . .
 EXPOSE 3000
@@ -318,11 +321,11 @@ Next Copilot will ask which Dockerfile you want to run. Choose the
 
 ![images/copilot-job-docker.png](images/copilot-job-docker.png)
 
-Next you are asked how you want to schedule the job. Choose "Rate":
+Next you are asked how you want to schedule the job. Choose "Fixed Schedule":
 
 ![images/copilot-job-rate.png](images/copilot-job-rate.png)
 
-Last it will ask how long to wait between job executions. Type "1m" for 1 minute:
+Last it will ask how how often you want to schedule the job. Choose "Yearly" because this is a job that we will kick off manually.
 
 ![images/copilot-job-wait.png](images/copilot-job-wait.png)
 
@@ -369,9 +372,25 @@ You will see the status as Copilot creates the job:
 
 ![images/copilot-job-creation.png](images/copilot-job-creation.png)
 
+Last but not least you can kick off the load test job right away with:
+
+```sh
+copilot job run
+```
+
+You can run this command multiple times to kick off multiple load tests in parallel if you want to increase
+the level of load test traffic. Each load test job will spawn its own task in the Elastic Container Service console:
+
+![images/ecs-task-list.png](images/ecs-task-list.png)
+
+The load test task prints out a report when it completes, so you can click in to the task details and select the "Logs" tab to see
+the results of the load test:
+
+![images/load-test-results.png](images/load-test-results.png)
+
 ## Step Seven: Look at CloudWatch to read the metrics
 
-Once the job is deployed we can open up the Amazon ECS console to view the reverse service and start watching it's activity.
+In addition to reading the load test task logs, we can monitor the deployment using the built-in stats in the Amazon ECS console.
 
 ![images/ecs-console.png](images/ecs-console.png)
 
@@ -401,7 +420,41 @@ Then choose the "ApplicationELB" category -> "TargetGroup" category and select t
 
 For an extra bonus are there are other things you are interested in about your service? You can add graphs for 2xx requests, 5xx requests, average or p99 latency, a log widget, etc. Once you are happy with the dashboard you have built you can either click "Save dashboard" to persist it for future reference, or just navigate away to discard it.
 
-## Step Seven: Tear everything down
+## Step Seven: Try deploying another copy of the application on AWS App Runner
+
+To deploy the application on AWS App Runner use the `copilot init` command again.
+
+This time choose "Request-driven Web Service" when asked to choose a workload type.
+
+![images/copilot-app-runner.png](images/copilot-app-runner.png)
+
+You can deploy the same Dockerfile again, but make sure to pick a new application name, like `reverse-app-runner`.
+
+As the service deploys using App Runner you will see a much more concise list of resources being created:
+
+![images/app-runner-resources.png](images/app-runner-resources.png)
+
+This is because AWS App Runner comes with its own load balancer which is built-in and doesn't require
+as much configuration in order to get traffic to a web service.
+
+Once the service deploys you will once again get a URL for your application. This time the URL
+is fully managed by AWS App Runner:
+
+![images/app-runner-url.png](images/app-runner-url.png)
+
+You can send traffic to your service using `curl`:
+
+```
+curl -d "this is a test" https://9airmmkptx.us-east-2.awsapprunner.com
+```
+
+And you can get logs for the service using `copilot svc logs`
+
+![images/app-runner-logs.png](images/app-runner-logs.png)
+
+Bonus Points: Try deploying another copy of the load test job, but this time make the load test target the AWS App Runner deployment.
+
+## Step Eight: Tear everything down
 
 If you want to clean everything up you can go back to Cloud9 and run:
 
