@@ -1,3 +1,4 @@
+const tracer = require('./tracer')('copilot-observability');
 const runes = require('runes');
 const express = require('express')
 const morgan = require('morgan');
@@ -12,7 +13,9 @@ app.use(express.raw({
 
 app.all('/', (req, res) => {
   if (req.body.length) {
-    let stringRunes = runes(req.body.toString());
+    var reqString=req.body.toString();
+    console.log(`Call to reverse string:${reqString}`);
+    let stringRunes = runes(req.body.toString()+'Hello');
     res.send(stringRunes.reverse().join(""));
   } else {
     res.send();

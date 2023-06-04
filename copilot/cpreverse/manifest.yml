@@ -1,9 +1,9 @@
-# The manifest for the "cptest" service.
+# The manifest for the "cpreverse" service.
 # Read the full specification for the "Load Balanced Web Service" type at:
 #  https://aws.github.io/copilot-cli/docs/manifest/lb-web-service/
 
 # Your service name will be used in naming your resources like log groups, ECS services, etc.
-name: cptest
+name: cpreverse
 type: Load Balanced Web Service
 
 # Distribute traffic to your service.
@@ -21,16 +21,9 @@ image:
   # Port exposed through your container to route traffic to it.
   port: 3000
 
-cpu: 1024       # Number of CPU units for the task.
-memory: 2048    # Amount of memory in MiB used by the task.
-# Configure autoscaling rules
-count:
-  range: 3-10  # How many instances of the container to deploy
-  cooldown:
-    in: 60s
-    out: 30s
-  cpu_percentage: 70 # Target CPU utilization to aim for when autoscaling
-#count: 1       # Number of tasks that should be running in your service.
+cpu: 256       # Number of CPU units for the task.
+memory: 512    # Amount of memory in MiB used by the task.
+count: 1       # Number of tasks that should be running in your service.
 exec: true     # Enable running commands in your container.
 network:
   connect: true # Enable Service Connect for intra-environment traffic between services.
