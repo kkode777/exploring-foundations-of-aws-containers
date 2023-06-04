@@ -16,7 +16,7 @@ source:
   # Additional properties that further specify the location of the artifacts.
   properties:
     branch: main
-    repository: https://github.com/aws-containers/exploring-foundations-of-aws-containers
+    repository: https://github.com/kkode777/exploring-foundations-of-aws-containers
     # Optional: specify the name of an existing CodeStar Connections connection.
     # connection_name: a-connection
 
